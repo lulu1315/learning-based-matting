@@ -1,8 +1,9 @@
 import numpy as np
 import scipy.sparse
-
+import sys
+import imageio
 from numpy.lib.stride_tricks import as_strided
-
+from scipy.sparse.linalg import spsolve
 
 def rolling_block(A, block=(3, 3)):
     shape = (A.shape[0] - block[0] + 1, A.shape[1] - block[1] + 1) + block
@@ -94,11 +95,12 @@ def getC(mask, c=800):
 
 
 def main():
-    img = scipy.misc.imread("troll.png")
-    trimap = scipy.misc.imread("trollTrimap.png", flatten='True')
+    img = scipy.misc.imread(sys.argv[1])
+    trimap = scipy.misc.imread(sys.argv[2], flatten='True')
 
     alpha = learning_based_matte(img, trimap)
-    scipy.misc.imsave('trollAlpha.png', alpha)
+    #scipy.misc.imsave(sys.argv[3], alpha)
+    imageio.imwrite(sys.argv[3], alpha)
     # plt.imshow(alpha, cmap = 'gray')
     # plt.show()
 
